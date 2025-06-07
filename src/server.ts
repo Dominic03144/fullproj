@@ -1,3 +1,4 @@
+import { statusCatalogRouter } from './statusCatalog/statusCatalog.route';
 import express, { Application, Response } from 'express';
 import dotenv from 'dotenv';
 import { userRouter } from './users/users.routes';
@@ -12,6 +13,10 @@ import { ordersStatusRouter } from './order-Status/order-status.routes';
 import { ordersRouter } from './orders/orders.router';
 import { menuItemRouter } from './menuitem/menuitem.routes';
 import { categoryRouter } from './category/category.route';
+import { addressRouter } from './address/address.route';
+import { restaurantRouter } from './restaurant/restaurant.route';
+import { cityRouter } from './city/city.route';
+import { stateRouter } from './state/state.route';
 
 
 
@@ -48,6 +53,14 @@ app.use('/api',ordersStatusRouter);
 app.use('/api',menuItemRouter);
 app.use('/api',categoryRouter);
 
+
+
+//my routes domii
+app.use('/api', statusCatalogRouter);
+app.use('/api', addressRouter);
+app.use('/api', restaurantRouter);
+app.use('/api', cityRouter);
+app.use('/api', stateRouter)
 
 
 //Start server
