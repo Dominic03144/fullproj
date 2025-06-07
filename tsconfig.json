@@ -1,16 +1,21 @@
-// tsconfig.json
 {
   "compilerOptions": {
-    "target": "es2021",
-    "module": "commonjs",
-    "rootDir": "./src",
+    "target": "ES2022",
+    "module": "NodeNext",
     "outDir": "./dist",
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
+    "rootDir": ".",
+    "moduleResolution": "nodenext",
+    "types": ["jest"],
+    "isolatedModules": true,
     "strict": true,
     "skipLibCheck": true,
-    "resolveJsonModule": true
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true
   },
-  "include": ["src/**/*.ts"],
-  "exclude": ["node_modules", "dist"]
+  "include": [
+    "src/**/*.ts","tests"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }
