@@ -41,7 +41,7 @@ app.use(rateLimiterMiddleware);
 
 //default route
 app.get('/',(req: any,res:Response)=>{
-    res.send('Welcome to Express API Backend with drizle ORM and PostgreSQL');
+    res.send('Welcome to Our Restaurant Management API');
 })
 //Routes 
 app.use('/api',userRouter);
@@ -54,24 +54,12 @@ app.use('/api',ordersRouter);
 app.use('/api',ordersStatusRouter);
 app.use('/api',menuItemRouter);
 app.use('/api',categoryRouter);
-
-
-
-
-//my routes domii
+//
 app.use('/api', statusCatalogRouter);
 app.use('/api', addressRouter);
 app.use('/api', restaurantRouter);
 app.use('/api', cityRouter);
-app.use('/api', stateRouter)
-
-
-//my routes domii
-app.use('/api', statusCatalogRouter);
-app.use('/api', addressRouter);
-app.use('/api', restaurantRouter);
-app.use('/api', cityRouter);
-app.use('/api', stateRouter)
+app.use('/api', stateRouter);
 
 
 //Start server
