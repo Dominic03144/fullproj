@@ -8,7 +8,7 @@
     "build": "tsc",
     "start": "node ./dist/index.js",
     "gen": "drizzle-kit generate",
-    "migrate": " tsx src/drizzle/migrate.ts",
+    "migrate": "tsx src/drizzle/migrate.ts",
     "studio": "drizzle-kit studio",
     "push": " drizzle-kit generate && drizzle-kit migrate && drizzle-kit push",
     "seed": "tsx src/drizzle/seed.ts"
@@ -24,6 +24,7 @@
     "drizzle-kit": "^0.31.1",
     "drizzle-orm": "^0.43.1",
     "express": "^5.1.0",
+    "express-authentication-authorization": "link:",
     "jsonwebtoken": "^9.0.2",
     "pg": "^8.16.0",
     "rate-limiter-flexible": "^7.1.1",

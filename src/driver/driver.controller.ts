@@ -1,80 +1,94 @@
-import { Request, Response } from 'express';
-import {
-    getDriversServices,
-    getDriverByIdServices,
-    createDriverServices,
-    updateDriverServices,
-    deleteDriverServices
-} from './driver.services'; // Adjust path if necessary
+import { Request, Response } from "express";
+import { createDriverServices, deleteDriverServices, getDriverByIdServices, getDriversServices, updateDriverServices } from "./driver.service";
 
-// Get all drivers
+//Business logic for driver-related operations
 export const getDrivers = async (req: Request, res: Response) => {
     try {
-        const drivers = await getDriversServices();
-        return res.status(200).json(drivers);
-    } catch (error) {
-        console.error(error);
-        return res.status(500).json({ error: "Internal server error" });
+        const allDrivers = await getDriversServices();
+        if (allDrivers == null || allDrivers.length == 0) {
+          res.status(404).json({ message: "No drivers found" });
+        }else{
+            res.status(200).json(allDrivers);             
+        }            
+    } catch (error:any) {
+        res.status(500).json({ error:error.message || "Failed to fetch drivers" });
     }
-};
+}
 
-// Get driver by ID
 export const getDriverById = async (req: Request, res: Response) => {
+    const driverId = parseInt(req.params.id);
+    if (isNaN(driverId)) {
+        res.status(400).json({ error: "Invalid driver ID" });
+         return; 
+    }
     try {
-        const driverId = parseInt(req.params.id);
-        if (isNaN(driverId)) {
-            return res.status(400).json({ error: "Invalid driver ID provided" });
-        }
         const driver = await getDriverByIdServices(driverId);
-        if (!driver) {
-            return res.status(404).json({ error: "Driver not found" });
+        if (driver == null) {
+            res.status(404).json({ message: "Driver not found" });
+        } else {
+            res.status(200).json(driver);
         }
-        return res.status(200).json(driver);
-    } catch (error) {
-        console.error(error);
-        return res.status(500).json({ error: "Internal server error" });
+    } catch (error:any) {
+        res.status(500).json({ error:error.message || "Failed to fetch driver" });
     }
-}; // The missing closing curly brace was added here!
+}
 
-// Create a new driver
 export const createDriver = async (req: Request, res: Response) => {
-    try {
-        const newDriver = req.body;
-        const message = await createDriverServices(newDriver);
-        return res.status(201).json({ message });
-    } catch (error) {
-        console.error(error);
-        return res.status(500).json({ error: "Internal server error" });
+    const {carMake,carModel,carYear ,userId} = req.body;
+    if (!carMake|| !carModel|| !carYear) {
+        res.status(400).json({ error: "All fields are required" });
+        return; 
     }
-};
+    try {
+        const newDriver = await createDriverServices({carMake,carModel,carYear,userId});
+        if (newDriver == null) {
+            res.status(500).json({ message: "Failed to create driver" });
+        } else {
+            res.status(201).json(newDriver);
+        }
+    } catch (error:any) {
+        res.status(500).json({ error:error.message || "Failed to create driver" });
+    }
+}
 
-// Update an existing driver
 export const updateDriver = async (req: Request, res: Response) => {
-    try {
-        const driverId = parseInt(req.params.id);
-        if (isNaN(driverId)) {
-            return res.status(400).json({ error: "Invalid driver ID provided" });
-        }
-        const updatedDriver = req.body;
-        const message = await updateDriverServices(driverId, updatedDriver);
-        return res.status(200).json({ message });
-    } catch (error) {
-        console.error(error);
-        return res.status(500).json({ error: "Internal server error" });
+    const driverId = parseInt(req.params.id);
+    if (isNaN(driverId)) {
+        res.status(400).json({ error: "Invalid driver ID" });
+        return; 
     }
-};
+    const { carMake,carModel,carYear } = req.body;
+    if (!carMake || !carModel|| !carYear) {
+        res.status(400).json({ error: "All fields are required" });
+        return; 
+    }
+    try {
+        const updatedDriver = await updateDriverServices(driverId, {carMake,carModel,carYear });
+        if (updatedDriver == null) {
+            res.status(404).json({ message: "Driver not found or failed to update" });
+        } else {
+            res.status(200).json(updatedDriver);
+        }
+    } catch (error:any) {
+        res.status(500).json({ error:error.message || "Failed to update driver" });
+    }
+}
 
-// Delete a driver
+
 export const deleteDriver = async (req: Request, res: Response) => {
-    try {
-        const driverId = parseInt(req.params.id);
-        if (isNaN(driverId)) {
-            return res.status(400).json({ error: "Invalid driver ID provided" });
-        }
-        const message = await deleteDriverServices(driverId);
-        return res.status(200).json({ message });
-    } catch (error) {
-        console.error(error);
-        return res.status(500).json({ error: "Internal server error" });
+    const driverId = parseInt(req.params.id);  
+    if (isNaN(driverId)) {
+        res.status(400).json({ error: "Invalid driver ID" });
+        return; 
     }
-};
+    try {
+        const deletedDriver = await deleteDriverServices(driverId);
+        if (deletedDriver) {
+            res.status(200).json({ message: "Driver deleted successfully" });
+        } else {
+            res.status(404).json({ message: "Driver not found" });
+        }
+    } catch (error:any) {    
+        res.status(500).json({ error:error.message || "Failed to delete driver" });
+    }    
+}

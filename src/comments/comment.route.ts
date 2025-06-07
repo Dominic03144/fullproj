@@ -5,23 +5,23 @@ import {
     getCommentById, 
     getComments, 
     updateComment 
-} from "./comments.controller"; // Updated import to comments.controller and function names
+} from "./comments.controller"; 
 
-export const commentRouter = Router(); // Renamed ownerRouter to commentRouter
+export const commentRouter = Router(); 
 
-// Comment routes definition
+
 
 // Get all comments
-commentRouter.get('/comments', getComments); // Changed path and controller function
+commentRouter.get('/comments', getComments); 
 
 // Get comment by ID
-commentRouter.get('/comments/:id', getCommentById); // Changed path and controller function
+commentRouter.get('/comments/:id', getCommentById); 
 
 // Create a new comment
-commentRouter.post('/comments', createComment); // Changed path and controller function
+commentRouter.post('/comments', createComment); 
 
 // Update an existing comment
-commentRouter.put('/comments/:id', updateComment); // Changed path and controller function
+commentRouter.put('/comments/:id', updateComment); 
 
 // Delete an existing comment
-commentRouter.delete('/comments/:id', deleteComment); // Changed path and controller function
+commentRouter.delete('/comments/:id', deleteComment); 

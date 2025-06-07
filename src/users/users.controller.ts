@@ -21,7 +21,7 @@ export const getUserById = async (req: Request, res: Response) => {
     const userId = parseInt(req.params.id);
     if (isNaN(userId)) {
         res.status(400).json({ error: "Invalid user ID" });
-         return; // Prevent further execution
+         return; 
     }
     try {
         const user = await getUserByIdServices(userId);
@@ -39,7 +39,7 @@ export const createUser = async (req: Request, res: Response) => {
     const { userName ,contactPhone,phoneVerified,email,emailVerified,confirmationCode,password } = req.body;
     if (!userName|| !contactPhone  || !phoneVerified|| !email|| !emailVerified|| !confirmationCode|| !password) {
         res.status(400).json({ error: "All fields are required" });
-        return; // Prevent further execution
+        return; 
     }
     try {
         const newUser = await createUserServices({userName ,contactPhone,phoneVerified,email,emailVerified,confirmationCode,password });
@@ -57,12 +57,12 @@ export const updateUser = async (req: Request, res: Response) => {
     const userId = parseInt(req.params.id);
     if (isNaN(userId)) {
         res.status(400).json({ error: "Invalid user ID" });
-        return; // Prevent further execution
+        return; 
     }
     const { userName ,contactPhone,phoneVerified,email,emailVerified,confirmationCode,password  } = req.body;
     if (!userName || !contactPhone || !phoneVerified || !email || !emailVerified || !confirmationCode || !password ) {
         res.status(400).json({ error: "All fields are required" });
-        return; // Prevent further execution
+        return; 
     }
     try {
         const updatedUser = await updateUserServices(userId, { userName ,contactPhone,phoneVerified,email,emailVerified,confirmationCode,password  });
@@ -81,7 +81,7 @@ export const deleteUser = async (req: Request, res: Response) => {
     const userId = parseInt(req.params.id);  
     if (isNaN(userId)) {
         res.status(400).json({ error: "Invalid user ID" });
-        return; // Prevent further execution
+        return; 
     }
     try {
         const deletedUser = await deleteUserServices(userId);

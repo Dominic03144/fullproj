@@ -1,28 +1,12 @@
-import { Router, Request, Response } from "express";
-import { createDriver, deleteDriver, getDriverById, getDrivers } from "./driver.controller";
+import {Router} from "express"
 
-export const driverRouter = Router();
+import {getDrivers,getDriverById,createDriver,updateDriver,deleteDriver} from "./driver.controller"
 
-// Driver routes definition
+export const driverRouter=Router();
 
+driverRouter.get("/driver",getDrivers).post("/driver",createDriver)
 
-// Get all drivers
-driverRouter.get('/drivers', (req: Request, res: Response, next) => {
-  Promise.resolve(getDrivers(req, res)).catch(next);
-});
+driverRouter.delete("/driver",deleteDriver)
 
-// Get driver by ID
-driverRouter.get('/drivers/:id', (req: Request, res: Response, next) => {
-  Promise.resolve(getDriverById(req, res)).catch(next);
-});
-
-// Create a new driver
-driverRouter.post('/drivers', (req: Request, res: Response, next) => {
-  Promise.resolve(createDriver(req, res)).catch(next);
-});
-
-
-// Delete an existing driver
-driverRouter.delete('/drivers/:id', (req: Request, res: Response) => {
-  deleteDriver(req, res);
-});
+driverRouter.get("/driver/:id",getDriverById)
+driverRouter.put("/driver/:id",updateDriver)

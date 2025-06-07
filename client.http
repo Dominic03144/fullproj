@@ -3,15 +3,13 @@ GET http://localhost:3000
 
 
 ###
-POST http://localhost:3000/api/users
+POST http://localhost:3000/api/localhost:3000/api/driver
 Content-Type: application/json
 
 {
-  "userName": "newuser",
-  "contactPhone": "1234567890",
-  "phoneVerified": true,
-  "email": "newuser@example.com",
-  "emailVerified": false,
-  "confirmationCode": "123456",
-  "password": "securepassword"
+  "carMake":"fyia",
+  "carModel":"dutdyu",
+  "carYear":2367
+  
 }
+###

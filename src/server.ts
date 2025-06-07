@@ -1,25 +1,31 @@
 import express, { Application, Response } from 'express';
 import dotenv from 'dotenv';
 import { userRouter } from './users/users.routes';
+import { ownerRouter } from './restaurant owner/owner.routes';
+import { driverRouter } from './driver/driver.routes';
+import { commentRouter } from './comments/comment.route';
 
 
 
-dotenv.config(); // Load environment variables from .env file
+dotenv.config(); 
 
-const app:Application = express(); // Create an Express application
+const app:Application = express(); 
 
  
-const PORT = process.env.PORT || 3000; // Set the port from environment variables or default to 5000
+const PORT = process.env.PORT || 3000; 
 
-app.use(express.json()); // Middleware to parse JSON bodies
-app.use(express.urlencoded({ extended: true })); // Middleware to parse URL-encoded bodies
+app.use(express.json()); 
+app.use(express.urlencoded({ extended: true }));
 
 //default route
 app.get('/',(req,res:Response)=>{
     res.send('Welcome to Express API Backend with drizle ORM and PostgreSQL');
 })
 //Routes 
-app.use('/api',userRouter); // Use user routes under /api/users
+app.use('/api',userRouter);
+app.use('/api',ownerRouter);
+app.use('/api',driverRouter);
+app.use('/api',commentRouter);
 
 //Start server
  

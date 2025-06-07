@@ -27,8 +27,8 @@ export const restaurantTable = pgTable('restaurantTable', {
     updatedAt: timestamp('updatedAt').defaultNow().notNull().$onUpdate(() => new Date()),
 });
 //4.MENU TABLE
-export const menuItemTable = pgTable('menuTable',{
-    menuId: serial('menuId').primaryKey(),
+export const menuItemTable = pgTable('menuItemTable',{
+    menuItemId: serial('menuId').primaryKey(),
     menuName:text('menuName').notNull(),
     restaurantId: integer('restaurantId').notNull().references(()=> restaurantTable.restaurantId, {onDelete: 'cascade'}),
     categoryId: integer('categoryId').notNull().references(() => categoryTable.categoryId, {onDelete: 'cascade'}),
@@ -137,7 +137,7 @@ export const commentTable = pgTable('commentTable',{
 export const orderMenuItemTable = pgTable('orderMenuItemTable',{
     orderMenuItemId: serial('orderMenuItemId').primaryKey(),
     orderId: integer('orderId').notNull().references(() => ordersTable.ordersId, { onDelete: 'cascade' }),
-    menuItemId: integer('menuItemId').notNull().references(() => menuItemTable.menuId, { onDelete: 'cascade' }),
+    menuItemId: integer('menuItemId').notNull().references(() => menuItemTable.menuItemId, { onDelete: 'cascade' }),
     quantity: integer('quantity').notNull(),
     itemPrice: decimal('itemPrice', { precision: 10, scale: 2 }).notNull(),
     price:decimal('price', { precision: 10, scale: 2 }).notNull(),
@@ -283,7 +283,7 @@ export const orderMenuItemTableRelations = relations(orderMenuItemTable, ({ one 
     }),
     menuItem: one(menuItemTable, {
         fields: [orderMenuItemTable.menuItemId],
-        references: [menuItemTable.menuId],
+        references: [menuItemTable.menuItemId],
     }),
 }));
 

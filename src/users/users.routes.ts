@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { createUser, deleteUser, getUserById, getUsers, updateUser } from "./users.controller";
-// import { adminRoleAuth, bothRolesAuth, userRoleAuth } from "../middleware/bearAuth";
+
 
 export const userRouter = Router();
 
@@ -18,9 +18,6 @@ userRouter.post('/users', createUser);
 
 // Update an existing user
 userRouter.put('/users/:id',updateUser);
-
-// Update an existing user with partial fields
-// userRouter.patch('/users/:id', updateUserPartial);
 
 // Delete an existing user
 userRouter.delete('/users/:id',deleteUser);

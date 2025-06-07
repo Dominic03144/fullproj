@@ -7,23 +7,23 @@ import {
     updateOwnerServices 
 } from "./owner.service"; 
 
-// Business logic for owner-related operations
+
 
 export const getOwners = async (req: Request, res: Response) => {
     try {
-        const allOwners = await getOwnersServices(); // Renamed variable and service call
+        const allOwners = await getOwnersServices(); 
         if (allOwners == null || allOwners.length == 0) {
-            res.status(404).json({ message: "No owners found" }); // Updated message
+            res.status(404).json({ message: "No owners found" });
         } else {
             res.status(200).json(allOwners);
         }
     } catch (error: any) {
-        res.status(500).json({ error: error.message || "Failed to fetch owners" }); // Updated message
+        res.status(500).json({ error: error.message || "Failed to fetch owners" }); 
     }
 }
 
 export const getOwnerById = async (req: Request, res: Response) => {
-    const ownerId = parseInt(req.params.id); // Renamed variable
+    const ownerId = parseInt(req.params.id); 
     if (isNaN(ownerId)) {
         res.status(400).json({ error: "Invalid owner ID" }); 
         return;
