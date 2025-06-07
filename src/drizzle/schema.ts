@@ -1,9 +1,10 @@
 
-import {text, timestamp, boolean, decimal,integer, serial, pgTable,pgEnum} from "drizzle-orm/pg-core";
+import {text, timestamp, boolean, decimal,integer, serial,pgEnum, pgTable} from "drizzle-orm/pg-core";
+
 import {relations} from "drizzle-orm";
 
 
-// Enums
+
 export const statusEnum = pgEnum("status_enum", [
   "pending",
   "accepted",

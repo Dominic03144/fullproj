@@ -13,6 +13,6 @@ const main = async () =>{
 }
  
 main().catch(console.error)
- 
-const db = drizzle(client,{schema, logger:true});
-export default db;
+
+export const db = drizzle(client,{schema, logger:true});
+
