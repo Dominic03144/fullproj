@@ -1,19 +1,26 @@
-// src/routes/users.routes.ts
-import { Router } from 'express';
-import {
-  getAllUsers,
-  getUserById,
-  createUser,
-  updateUser,
-  deleteUser
-} from '../controllers/users.controller';
+import { Router } from "express";
+import { createUser, deleteUser, getUserById, getUsers, updateUser } from "./users.controller";
+// import { adminRoleAuth, bothRolesAuth, userRoleAuth } from "../middleware/bearAuth";
 
-const router = Router();
+export const userRouter = Router();
 
-router.get('/', getAllUsers);
-router.get('/:id', getUserById);
-router.post('/', createUser);
-router.put('/:id', updateUser);
-router.delete('/:id', deleteUser);
+// User routes definition
 
-export default router;
+
+// Get all users
+userRouter.get('/users', getUsers);
+
+// Get user by ID
+userRouter.get('/users/:id', getUserById);
+
+// Create a new user
+userRouter.post('/users', createUser);
+
+// Update an existing user
+userRouter.put('/users/:id',updateUser);
+
+// Update an existing user with partial fields
+// userRouter.patch('/users/:id', updateUserPartial);
+
+// Delete an existing user
+userRouter.delete('/users/:id',deleteUser);

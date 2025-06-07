@@ -1,5 +1,6 @@
 import express, { Application, Response } from 'express';
 import dotenv from 'dotenv';
+import { userRouter } from './users/users.routes';
 
 
 
@@ -17,7 +18,8 @@ app.use(express.urlencoded({ extended: true })); // Middleware to parse URL-enco
 app.get('/',(req,res:Response)=>{
     res.send('Welcome to Express API Backend with drizle ORM and PostgreSQL');
 })
-
+//Routes 
+app.use('/api',userRouter); // Use user routes under /api/users
 
 //Start server
  
