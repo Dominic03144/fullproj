@@ -92,7 +92,7 @@ async function seed() {
       driverId: driver.driverId,
       price: '12.99',
       finalPrice: '12.99',
-      order_status: 'pending'
+      //order_status: 'pending'
     }
   ]).returning();
 

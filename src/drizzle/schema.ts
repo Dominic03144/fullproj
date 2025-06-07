@@ -4,12 +4,12 @@ import {relations} from "drizzle-orm";
 
 
 // Enums
-export const statusEnum = pgEnum("status_enum", [
-  "pending",
-  "accepted",
-  "rejected",
-  "delivered",
-]);
+// export const statusEnum = pgEnum("status_enum", [
+//   "pending",
+//   "accepted",
+//   "rejected",
+//   "delivered",
+// ]);
 //1.STATE TABLE
 export const stateTable = pgTable('stateTable',{
     stateId: serial('stateId').primaryKey(),
@@ -112,7 +112,7 @@ export const ordersTable = pgTable('ordersTable',{
     price:decimal('price', {precision: 10, scale: 2}),
     discount:decimal('discount',{precision: 10, scale: 2}).default('0.00'),
     finalPrice:decimal('finalPrice',{precision: 10, scale: 2}).notNull(),
-    order_status: statusEnum("status").default("pending").notNull(),
+    //order_status: statusEnum("status").default("pending").notNull(),
     comment:text('comment'),
     createdAt:timestamp('createdAt').notNull().defaultNow(),
     updatedAt:timestamp('updatedAt').notNull().defaultNow().$onUpdate(() => new Date()),
