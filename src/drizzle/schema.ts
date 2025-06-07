@@ -1,5 +1,7 @@
-import {text, timestamp, boolean, decimal,integer, serial, pgTable} from "drizzle-orm/pg-core";
+import {text, timestamp, boolean, decimal,integer, serial, pgEnum,pgTable} from "drizzle-orm/pg-core";
 import {relations} from "drizzle-orm";
+
+export const roleEnum = pgEnum("userType",['member','admin','driver','owner'])
 
 //1.STATE TABLE
 export const stateTable = pgTable('stateTable',{
@@ -55,6 +57,7 @@ export const userTable = pgTable('userTable',{
     emailVerified: boolean('emailVerified').default(false),
     confirmationCode: text('confirmationCode'),
     password:text('password').notNull(),
+    userType: roleEnum("userType").default('member'),
     createdAt: timestamp('createdAt').defaultNow().notNull(),
     updatedAt: timestamp('updatedAt').defaultNow().notNull().$onUpdate(() => new Date()),
 

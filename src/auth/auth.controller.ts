@@ -3,6 +3,7 @@ import { Request, Response } from "express";
 import { createUserServices, getUserByEmailService } from "./auth.service";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { sendNotificationEmail } from "../middleware/mailer";
 import { UserLoginValidator, UserValidator } from "../validation/user.validator";
 
 export const createUser=async(req:Request,res:Response)=>{
@@ -29,12 +30,19 @@ const salt =bcrypt.genSaltSync(10)
 const hashedPassword=bcrypt.hashSync(user.password,salt)
 user.password=hashedPassword
 
-const newUser=await createUserServices(user)
-
-res.status(200).json(newUser)
+ // Call the service to create the user
+        const newUser = await createUserServices(user);
+        const results = await sendNotificationEmail(user.email, user.userName, "Account created successfully", "Welcome to our food service</b>");
+        if (!results) {
+            res.status(500).json({ error: "Failed to send notification email" });
+            return;
+        }else {
+            console.log("Email sent successfully:", results);
+        }     
+        res.status(201).json(newUser);  
 
 } catch (error) {
-    res.status(500).json({error:error.message || "Failed to register user"})
+    res.status(500).json({error: "Failed to register user"})
 }
 }
 
@@ -77,7 +85,7 @@ export const loginUser=async(req:Request,res:Response)=>{
         res.status(200).json({token,userId:user.userId,userName:user.userName, email:user.email , userType:user.userType})
         
     } catch (error) {
-        res.status(500).json({error:error.message|| "Failed to login user"})
+        res.status(500).json({error:"Failed to login user"})
         
     }
 }

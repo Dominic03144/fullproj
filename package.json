@@ -19,6 +19,7 @@
   "packageManager": "pnpm@10.9.0",
   "dependencies": {
     "@neondatabase/serverless": "^1.0.0",
+    "@types/nodemailer": "^6.4.17",
     "bcrypt": "^6.0.0",
     "dotenv": "^16.5.0",
     "drizzle-kit": "^0.31.1",
@@ -26,6 +27,7 @@
     "express": "^5.1.0",
     "express-authentication-authorization": "link:",
     "jsonwebtoken": "^9.0.2",
+    "nodemailer": "^7.0.3",
     "pg": "^8.16.0",
     "rate-limiter-flexible": "^7.1.1",
     "zod": "^3.25.28"
