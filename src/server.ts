@@ -1,3 +1,4 @@
+import { statusCatalogRouter } from './statusCatalog/statusCatalog.route';
 import express, { Application, Response } from 'express';
 import dotenv from 'dotenv';
 import { userRouter } from './users/users.routes';
@@ -7,6 +8,10 @@ import { commentRouter } from './comments/comment.route';
 import { logger } from './middleware/logger';
 import { rateLimiterMiddleware } from './middleware/limiter';
 import { authRouter } from './auth/auth.route';
+import { addressRouter } from './address/address.route';
+import { restaurantRouter } from './restaurant/restaurant.route';
+import { cityRouter } from './city/city.route';
+import { stateRouter } from './state/state.route';
 
 
 
@@ -28,7 +33,7 @@ app.use(rateLimiterMiddleware);
 
 
 //default route
-app.get('/',(req,res:Response)=>{
+app.get('/',(req: any,res:Response)=>{
     res.send('Welcome to Express API Backend with drizle ORM and PostgreSQL');
 })
 //Routes 
@@ -37,6 +42,14 @@ app.use('/api',ownerRouter);
 app.use('/api',driverRouter);
 app.use('/api',commentRouter);
 app.use('/api',authRouter);
+
+//my routes domii
+app.use('/api', statusCatalogRouter);
+app.use('/api', addressRouter);
+app.use('/api', restaurantRouter);
+app.use('/api', cityRouter);
+app.use('/api', stateRouter)
+
 
 //Start server
  

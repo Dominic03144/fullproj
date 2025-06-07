@@ -17,9 +17,6 @@ importers:
       bcrypt:
         specifier: ^6.0.0
         version: 6.0.0
-      dotenv:
-        specifier: ^16.5.0
-        version: 16.5.0
       drizzle-kit:
         specifier: ^0.31.1
         version: 0.31.1
@@ -63,6 +60,9 @@ importers:
       '@types/pg':
         specifier: ^8.15.2
         version: 8.15.4
+      dotenv:
+        specifier: ^16.5.0
+        version: 16.5.0
       tsx:
         specifier: ^4.19.4
         version: 4.19.4
