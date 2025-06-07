@@ -42,13 +42,13 @@ export const getOwnerById = async (req: Request, res: Response) => {
 }
 
 export const createOwner = async (req: Request, res: Response) => {
-    const { userName, contactPhone, phoneVerified, email, emailVerified, confirmationCode, password } = req.body;
-    if (!userName || !contactPhone || !phoneVerified || !email || !emailVerified || !confirmationCode || !password) {
+    const { restaurantOwnerId, restaurantId, ownerId} = req.body;
+    if (!restaurantOwnerId || !restaurantId || !ownerId ) {
         res.status(400).json({ error: "All fields are required" });
         return;
     }
     try {
-        const newOwner = await createOwnerServices({ restaurantOwnerId, restaurantId, ownerId }); 
+        const newOwner = await createOwnerServices({ restaurantOwnerId, restaurantId, ownerId  }); 
         if (newOwner == null) {
             res.status(500).json({ message: "Failed to create owner" }); 
         } else {
