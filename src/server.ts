@@ -54,11 +54,7 @@ app.use('/api',ordersRouter);
 app.use('/api',ordersStatusRouter);
 app.use('/api',menuItemRouter);
 app.use('/api',categoryRouter);
-app.use('/api',ordersMenuItemRouter);
-app.use('/api',ordersRouter);
-app.use('/api',ordersStatusRouter);
-app.use('/api',menuItemRouter);
-app.use('/api',categoryRouter);
+
 
 
 
