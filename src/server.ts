@@ -42,6 +42,11 @@ app.use('/api',ownerRouter);
 app.use('/api',driverRouter);
 app.use('/api',commentRouter);
 app.use('/api',authRouter);
+app.use('/api',ordersMenuItemRouter);
+app.use('/api',ordersRouter);
+app.use('/api',ordersStatusRouter);
+app.use('/api',menuItemRouter);
+app.use('/api',categoryRouter);
 
 //my routes domii
 app.use('/api', statusCatalogRouter);
