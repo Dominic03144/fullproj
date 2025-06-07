@@ -1,5 +1,7 @@
 import { eq } from "drizzle-orm";
+
 import {db} from "../drizzle/db";
+
 import { stateTable } from "../drizzle/schema";
 import type { InferModel } from "drizzle-orm";
 

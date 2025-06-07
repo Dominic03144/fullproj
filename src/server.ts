@@ -8,11 +8,13 @@ import { commentRouter } from './comments/comment.route';
 import { logger } from './middleware/logger';
 import { rateLimiterMiddleware } from './middleware/limiter';
 import { authRouter } from './auth/auth.route';
+//
 import { ordersMenuItemRouter } from './order-Menu-Item/orderMenuItem.route';
 import { ordersStatusRouter } from './order-Status/order-status.routes';
 import { ordersRouter } from './orders/orders.router';
 import { menuItemRouter } from './menuitem/menuitem.routes';
 import { categoryRouter } from './category/category.route';
+
 import { addressRouter } from './address/address.route';
 import { restaurantRouter } from './restaurant/restaurant.route';
 import { cityRouter } from './city/city.route';
@@ -38,7 +40,7 @@ app.use(rateLimiterMiddleware);
 
 
 //default route
-app.get('/',(req,res:Response)=>{
+app.get('/',(req: any,res:Response)=>{
     res.send('Welcome to Express API Backend with drizle ORM and PostgreSQL');
 })
 //Routes 
@@ -58,6 +60,14 @@ app.use('/api',ordersStatusRouter);
 app.use('/api',menuItemRouter);
 app.use('/api',categoryRouter);
 
+
+
+//my routes domii
+app.use('/api', statusCatalogRouter);
+app.use('/api', addressRouter);
+app.use('/api', restaurantRouter);
+app.use('/api', cityRouter);
+app.use('/api', stateRouter)
 
 
 //my routes domii
