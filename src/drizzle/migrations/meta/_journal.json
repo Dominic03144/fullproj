@@ -8,6 +8,20 @@
       "when": 1749027912934,
       "tag": "0000_heavy_lady_mastermind",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1749291034415,
+      "tag": "0001_lively_mathemanic",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1749297802599,
+      "tag": "0002_lush_warstar",
+      "breakpoints": true
     }
   ]
 }
