@@ -9,9 +9,11 @@ import {
   updateRestaurant,
 } from "./restaurant.controller";
 
+
+
 export const restaurantRouter = Router();
 
-// Restaurant routes definition
+
 
 // Get all restaurants
 restaurantRouter.get("/restaurants", getRestaurants);
