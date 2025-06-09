@@ -43,13 +43,13 @@ export const getCommentById = async (req: Request, res: Response) => {
 
 export const createComment = async (req: Request, res: Response) => {
 
-    const { commentId, orderId, userId, commentText } = req.body;
-    if (!commentId || !orderId || !userId || !commentText) {
+    const {  orderId, userId, commentText } = req.body;
+    if (  !orderId || !userId || !commentText) {
         res.status(400).json({ error: "All fields are required" });
         return; 
     }
     try {
-        const newComment = await createCommentServices({ commentId, orderId, userId, commentText }); 
+        const newComment = await createCommentServices({ orderId, userId, commentText }); 
         if (newComment == null) {
             res.status(500).json({ message: "Failed to create comment" });
         } else {

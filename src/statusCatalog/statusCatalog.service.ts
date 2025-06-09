@@ -1,6 +1,6 @@
 // src/services/statusCatalog.service.ts
 import { eq } from "drizzle-orm";
-import db from "../drizzle/db";
+import {db} from "../drizzle/db";
 import { statusCatalogTable } from "../drizzle/schema";
 import type { InferModel } from "drizzle-orm";
 

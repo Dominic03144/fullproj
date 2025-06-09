@@ -1,15 +1,38 @@
 ###
 GET http://localhost:3000
-
-
 ###
-POST http://localhost:3000/api/localhost:3000/api/driver
+POST http://localhost:3000/api/driver
 Content-Type: application/json
-
 {
   "carMake":"fyia",
   "carModel":"dutdyu",
-  "carYear":2367
-  
+  "carYear":2000,
+  "userId": 4
 }
 ###
+POST http://localhost:3000/restaurant
+Content-Type: application/json
+
+{
+    "restaurantName": "BBQ Smokehouse",
+    "streetAddress": "222 Pit Rd",
+    "zipCode": "77001",
+    "cityId": 103
+}
+###
+POST http://localhost:3000/states
+Content-Type: application/json
+
+ {
+    "stateName": "Nairobi County",
+    "stateCode": "KE-47"
+ }
+  ###
+  POST http://localhost:3000/city
+Content-Type: application/json
+
+{
+    "cityName": "Nairobi CBD",
+    "stateId": 1
+}
+

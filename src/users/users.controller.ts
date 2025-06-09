@@ -36,13 +36,13 @@ export const getUserById = async (req: Request, res: Response) => {
 }
 
 export const createUser = async (req: Request, res: Response) => {
-    const { userName ,contactPhone,phoneVerified,email,emailVerified,confirmationCode,password } = req.body;
-    if (!userName|| !contactPhone  || !phoneVerified|| !email|| !emailVerified|| !confirmationCode|| !password) {
+    const { userName ,contactPhone,email,confirmationCode,password} = req.body;
+    if (!userName|| !contactPhone  || !email||  !confirmationCode|| !password ) {
         res.status(400).json({ error: "All fields are required" });
         return; 
     }
     try {
-        const newUser = await createUserServices({userName ,contactPhone,phoneVerified,email,emailVerified,confirmationCode,password });
+        const newUser = await createUserServices({userName ,contactPhone,email,confirmationCode,password});
         if (newUser == null) {
             res.status(500).json({ message: "Failed to create user" });
         } else {

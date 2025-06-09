@@ -9,7 +9,7 @@ export const UserValidator = z.object({
   confirmationCode:z.string().nonempty(),
   phoneVerified:z.boolean().optional(),
   emailVerified:z.boolean().optional(),
-   userType: z.enum(["admin", "member", "driver", "owner"]).optional()
+  userType: z.enum(["admin", "member", "driver", "owner"]).optional()
 });
 
 export const UserLoginValidator = z.object({
