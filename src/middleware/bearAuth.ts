@@ -1,6 +1,18 @@
 import jwt from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
 
+// Declare enum roles from your pgEnum
+export type UserType = "customer" | "owner" | "driver" | "admin" | "member";
+
+// Token payload structure
+type DecodedToken = {
+  userId: string;
+  email: string;
+  userType: UserType;
+  exp?: number;
+};
+
+// Extend Express request
 declare global {
   namespace Express {
     interface Request {
@@ -9,61 +21,51 @@ declare global {
   }
 }
 
-
-type DecodedToken = {
-    userId: string;
-    email: string;
-    userType: string;
-    exp?: number;
+// ✅ Verify Token Function
+export const verifyToken = async (token: string, secret: string): Promise<DecodedToken | null> => {
+  try {
+    const decoded = jwt.verify(token, secret) as DecodedToken;
+    return decoded;
+  } catch (error) {
+    return null;
+  }
 };
 
+// ✅ Main Auth Middleware Factory
+export const authMiddleware = (requiredRole: UserType | "both") => {
+  return async (req: Request, res: Response, next: NextFunction) => {
+    const token = req.header("Authorization");
 
-//AUTHENTICATION MIDDLEWARE
-export const verifyToken = async (token: string, secret: string) => {
-    try {
-        const decoded =  jwt.verify(token as string, secret as string) as DecodedToken;
-        return decoded;
-    } catch (error: any) {
-        return null;
-    }
-}
-
-//AUTHORIZATION MIDDLEWARE
-export const authMiddleware  = async(req: Request, res: Response, next: NextFunction,requiredRole:string) => {
-     const token = req.header("Authorization");
     if (!token) {
-        res.status(401).json({ error: "Authorization header is missing" });
-        return;
+      return res.status(401).json({ error: "Authorization header is missing" });
     }
 
-    const decodedToken= await verifyToken(token, process.env.JWT_SECRET as string) as DecodedToken;
-    
+    const decodedToken = await verifyToken(token, process.env.JWT_SECRET as string);
+
     if (!decodedToken) {
-        res.status(401).json({ error: "Invalid or expired token" });
-        return;
-    }   
-    const userType = decodedToken?.userType;
-    // console.log("🚀 ~ authMiddleware ~ decodedToken:", decodedToken)
-   
-        if (requiredRole === "both" && (userType === "admin" || userType === "member")) {
-            if (decodedToken.userType === "admin" || decodedToken.userType === "member") {
-                req.user = decodedToken;
-                next();
-                return;
-            }
-        } else if (userType === requiredRole) {
-            req.user = decodedToken;
-            next();
-            return;
-        }    
+      return res.status(401).json({ error: "Invalid or expired token" });
+    }
 
-    else {
-        res.status(403).json({ error: "Forbidden: You do not have permission to access this resource" });
-    }    
+    const userType = decodedToken.userType;
 
+    const hasAccess =
+      requiredRole === "both"
+        ? userType === "admin" || userType === "member"
+        : userType === requiredRole;
+
+    if (!hasAccess) {
+      return res.status(403).json({ error: "Forbidden: You do not have permission to access this resource" });
+    }
+
+    req.user = decodedToken;
+    next();
+  };
 };
 
-// Middleware to check if the user is an admin
-export const adminRoleAuth  = async(req: Request, res: Response, next: NextFunction) => await authMiddleware(req, res, next, "admin");
-export const userRoleAuth  = async(req: Request, res: Response, next: NextFunction) => await authMiddleware(req, res, next, "member");
-export const bothRolesAuth = async(req: Request, res: Response, next: NextFunction) => await authMiddleware(req, res, next, "both");
+// ✅ Export ready-to-use role-based middleware
+export const adminRoleAuth = authMiddleware("admin");
+export const userRoleAuth = authMiddleware("member");
+export const bothRolesAuth = authMiddleware("both");
+export const ownerRoleAuth = authMiddleware("owner");
+export const driverRoleAuth = authMiddleware("driver");
+export const customerRoleAuth = authMiddleware("customer");

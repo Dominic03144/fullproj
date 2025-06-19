@@ -1,9 +1,14 @@
 import { Router } from "express";
-import { createUser, loginUser, passwordReset, resetPassword } from "./auth.controller";
+import {
+  createUser,
+  loginUser,
+  passwordReset,
+  resetPassword,
+} from "./auth.controller";
 
 export const authRouter = Router();
 
-authRouter.post('/register', createUser);
-authRouter.post('/login', loginUser); 
-authRouter.post("/password-reset", passwordReset);
-authRouter.put("/reset/:token", resetPassword);
+authRouter.post("/auth/register", createUser);
+authRouter.post("/auth/login", loginUser);
+authRouter.post("/auth/password-reset", passwordReset);
+authRouter.put("/auth/reset/:token", resetPassword);

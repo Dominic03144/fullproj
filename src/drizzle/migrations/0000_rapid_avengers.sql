@@ -1,4 +1,4 @@
-CREATE TYPE "public"."userType" AS ENUM('member', 'admin', 'driver', 'owner');--> statement-breakpoint
+CREATE TYPE "public"."status_enum" AS ENUM('pending', 'accepted', 'rejected', 'delivered');--> statement-breakpoint
 CREATE TABLE "addressTable" (
 	"addressId" serial PRIMARY KEY NOT NULL,
 	"streetAddress" text NOT NULL,
@@ -72,7 +72,8 @@ CREATE TABLE "orderStatusTable" (
 	"orderStatusId" serial PRIMARY KEY NOT NULL,
 	"orderId" integer NOT NULL,
 	"statusCatalogId" integer NOT NULL,
-	"createdAt" timestamp DEFAULT now() NOT NULL
+	"createdAt" timestamp DEFAULT now() NOT NULL,
+	"updatedAt" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE "ordersTable" (
@@ -86,6 +87,7 @@ CREATE TABLE "ordersTable" (
 	"price" numeric(10, 2),
 	"discount" numeric(10, 2) DEFAULT '0.00',
 	"finalPrice" numeric(10, 2) NOT NULL,
+	"status" "status_enum" DEFAULT 'pending' NOT NULL,
 	"comment" text,
 	"createdAt" timestamp DEFAULT now() NOT NULL,
 	"updatedAt" timestamp DEFAULT now() NOT NULL
@@ -128,27 +130,12 @@ CREATE TABLE "userTable" (
 	"emailVerified" boolean DEFAULT false,
 	"confirmationCode" text,
 	"password" text NOT NULL,
-	"userType" "userType" DEFAULT 'member',
 	"createdAt" timestamp DEFAULT now() NOT NULL,
 	"updatedAt" timestamp DEFAULT now() NOT NULL,
 	CONSTRAINT "userTable_contactPhone_unique" UNIQUE("contactPhone"),
 	CONSTRAINT "userTable_email_unique" UNIQUE("email")
 );
 --> statement-breakpoint
-DROP TABLE "address" CASCADE;--> statement-breakpoint
-DROP TABLE "category" CASCADE;--> statement-breakpoint
-DROP TABLE "city" CASCADE;--> statement-breakpoint
-DROP TABLE "comment" CASCADE;--> statement-breakpoint
-DROP TABLE "driver" CASCADE;--> statement-breakpoint
-DROP TABLE "menu_item" CASCADE;--> statement-breakpoint
-DROP TABLE "order_menu_item" CASCADE;--> statement-breakpoint
-DROP TABLE "order_status" CASCADE;--> statement-breakpoint
-DROP TABLE "orders" CASCADE;--> statement-breakpoint
-DROP TABLE "restaurant" CASCADE;--> statement-breakpoint
-DROP TABLE "restaurant_owner" CASCADE;--> statement-breakpoint
-DROP TABLE "state" CASCADE;--> statement-breakpoint
-DROP TABLE "status_catalog" CASCADE;--> statement-breakpoint
-DROP TABLE "users" CASCADE;--> statement-breakpoint
 ALTER TABLE "addressTable" ADD CONSTRAINT "addressTable_userId_userTable_userId_fk" FOREIGN KEY ("userId") REFERENCES "public"."userTable"("userId") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "addressTable" ADD CONSTRAINT "addressTable_cityId_cityTable_cityId_fk" FOREIGN KEY ("cityId") REFERENCES "public"."cityTable"("cityId") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "cityTable" ADD CONSTRAINT "cityTable_stateId_stateTable_stateId_fk" FOREIGN KEY ("stateId") REFERENCES "public"."stateTable"("stateId") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint

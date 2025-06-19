@@ -1,6 +1,6 @@
 {
-  "id": "4e02c168-b487-4171-b07a-b0ea7dc267fc",
-  "prevId": "43695b32-3e00-4e8d-9168-97cd95dfbcf4",
+  "id": "66b49ae9-0f37-4ef9-9b24-1c3d7cff9abe",
+  "prevId": "6862f4d6-8b90-4a55-ad09-63d647ccec9b",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -994,6 +994,14 @@
           "notNull": false,
           "default": false
         },
+        "userType": {
+          "name": "userType",
+          "type": "user_type",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'customer'"
+        },
         "confirmationCode": {
           "name": "confirmationCode",
           "type": "text",
@@ -1054,6 +1062,17 @@
         "accepted",
         "rejected",
         "delivered"
+      ]
+    },
+    "public.user_type": {
+      "name": "user_type",
+      "schema": "public",
+      "values": [
+        "customer",
+        "owner",
+        "driver",
+        "admin",
+        "member"
       ]
     }
   },

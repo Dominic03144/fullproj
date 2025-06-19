@@ -4,6 +4,8 @@ import {text, timestamp, boolean, decimal,integer, serial,pgEnum, pgTable} from 
 import {relations} from "drizzle-orm";
 
 
+export const userTypeEnum = pgEnum("user_type", ["customer", "owner", "driver", "admin", "member"]);
+
 
 export const statusEnum = pgEnum("status_enum", [
   "pending",
@@ -63,6 +65,7 @@ export const userTable = pgTable('userTable',{
     phoneVerified: boolean('phoneVerified').default(false),
     email: text('email').notNull().unique(),
     emailVerified: boolean('emailVerified').default(false),
+userType: userTypeEnum("userType").default("customer").notNull(),
     confirmationCode: text('confirmationCode'),
     password:text('password').notNull(),
     createdAt: timestamp('createdAt').defaultNow().notNull(),
@@ -342,3 +345,4 @@ export type TCommentSelect = typeof commentTable.$inferSelect;
 
 export type TOrderMenuItemInsert = typeof orderMenuItemTable.$inferInsert;
 export type TOrderMenuItemSelect = typeof orderMenuItemTable.$inferSelect;
+
