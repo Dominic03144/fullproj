@@ -1,41 +1,61 @@
-
+import { db } from "../drizzle/db";
+// Make sure the file exists at this path and is named 'UserTable.ts' (case-sensitive).
+// If the file is named 'userTable.ts', update the import as follows:
+import { userTable } from "../drizzle/schema";
 import { eq } from "drizzle-orm";
-import {db} from "../drizzle/db";
-import { TUserInsert, TUserSelect, userTable } from "../drizzle/schema";
+import bcrypt from "bcryptjs";
 
+export const getUsersServices = async () => {
+  return await db.select().from(userTable);
+};
 
-//CRUD Operations for User entity
+export const getUserByIdServices = async (id: number) => {
+  const result = await db.select().from(userTable).where(eq(userTable.userId, id));
+  return result[0];
+};
 
+export const createUserServices = async (userData: {
+  userName: string;
+  contactPhone: string;
+  email: string;
+  confirmationCode: string;
+  password: string;
+}) => {
+  const hashedPassword = await bcrypt.hash(userData.password, 10);
 
+  const [user] = await db
+    .insert(userTable)
+    .values({ ...userData, password: hashedPassword })
+    .returning();
 
-//Get all users
-export const getUsersServices = async():Promise<TUserSelect[] | null> => {
-    return await db.query.userTable.findMany({});
-}
+  return user;
+};
 
-//Get user by ID
-export const getUserByIdServices = async(userId: number):Promise<TUserSelect | undefined> => {
-     return await db.query.userTable.findFirst({
-        where: eq(userTable.userId, userId)
-    })  
-}
+export const updateUserServices = async (id: number, updatedData: any) => {
+  const hashedPassword = await bcrypt.hash(updatedData.password, 10);
 
-// Create a new user
-export const createUserServices = async(user: TUserInsert):Promise<string> => {
-    await db.insert(userTable).values(user).returning();
-    return "User created successfully 🎉";
-}
+  const [user] = await db
+    .update(userTable)
+    .set({ ...updatedData, password: hashedPassword })
+    .where(eq(userTable.userId, id))
+    .returning();
 
-// Update an existing user
-export const updateUserServices = async(userId: number, user: Partial<TUserInsert>):Promise<string> => {
-    await db.update(userTable).set(user).where(eq(userTable.userId, userId));
-    return "User updated successfully 😎";
-}
+  return user;
+};
 
+export const deleteUserServices = async (id: number) => {
+  const result = await db.delete(userTable).where(eq(userTable.userId, id));
+  return (result.rowCount ?? 0) > 0;
+};
 
-// Delete a user
+export type UserType = "customer" | "owner" | "driver" | "admin" | "member";
 
-export const deleteUserServices = async(userId: number):Promise<string> => {
-  await db.delete(userTable).where(eq(userTable.userId, userId));
-  return "User deleted successfully 🎉"
-}
+export const updateUserRoleService = async (id: number, userType: UserType) => {
+  const [user] = await db
+    .update(userTable)
+    .set({ userType })
+    .where(eq(userTable.userId, id))
+    .returning();
+
+  return user;
+};

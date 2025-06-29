@@ -2,7 +2,7 @@ import express, { Application, Response } from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 
-import { userRouter } from './users/users.routes';
+import userRouter from './users/users.routes';
 import { ownerRouter } from './restaurant owner/owner.routes';
 import { driverRouter } from './driver/driver.routes';
 import { commentRouter } from './comments/comment.route';

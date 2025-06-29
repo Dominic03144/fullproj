@@ -1,37 +1,49 @@
-import { eq } from "drizzle-orm";
+// src/comments/comments.service.ts
 import { db } from "../drizzle/db";
+import { commentsTable } from "../drizzle/schema";
+import { eq } from "drizzle-orm";
 
-import { TCommentInsert, TCommentSelect, commentTable } from "../drizzle/schema";
-
-
-// CRUD Operations for Comment entity
-
-
-export const getCommentsServices = async(): Promise<TCommentSelect[] | null> => {
-    return await db.query.commentTable.findMany({});
+// Get all comments
+export async function getCommentsServices() {
+  return await db.select().from(commentsTable);
 }
 
-
-export const getCommentByIdServices = async(commentId: number): Promise<TCommentSelect | undefined> => {
-    return await db.query.commentTable.findFirst({
-        where: eq(commentTable.commentId, commentId) 
-    })
+// Get comment by ID
+export async function getCommentByIdServices(commentId: number) {
+  const comment = await db
+    .select()
+    .from(commentsTable)
+    .where(eq(commentsTable.commentId, commentId));
+  return comment[0] || null;
 }
 
-
-export const createCommentServices = async(comment: TCommentInsert): Promise<string> => {
-    await db.insert(commentTable).values(comment).returning();
-    return "Comment created successfully 🎉";
+// Create comment
+export async function createCommentServices(data: {
+  userId: number;
+  commentText: string;
+  commentType: string;
+}) {
+  const result = await db.insert(commentsTable).values(data).returning();
+  return result[0]; // First inserted row
 }
 
-
-export const updateCommentServices = async(commentId: number, comment: Partial<TCommentInsert>): Promise<string> => {
-    await db.update(commentTable).set(comment).where(eq(commentTable.commentId, commentId));
-    return "Comment updated successfully 😎";
+// Update comment
+export async function updateCommentServices(
+  commentId: number,
+  data: { userId: number; commentText: string }
+) {
+  const result = await db
+    .update(commentsTable)
+    .set(data)
+    .where(eq(commentsTable.commentId, commentId))
+    .returning();
+  return result[0] || null;
 }
 
-
-export const deleteCommentServices = async(commentId: number): Promise<string> => {
-    await db.delete(commentTable).where(eq(commentTable.commentId, commentId));
-    return "Comment deleted successfully 🎉"
+// Delete comment
+export async function deleteCommentServices(commentId: number) {
+  const result = await db
+    .delete(commentsTable)
+    .where(eq(commentsTable.commentId, commentId));
+  return (result.rowCount ?? 0) > 0 || Array.isArray(result); // depending on DB
 }

@@ -1,37 +1,67 @@
 import { eq } from "drizzle-orm";
-import db from "../drizzle/db";
-import { TOrderSelect,TOrderInsert,ordersTable } from "../drizzle/schema";
- 
- 
-//CRUD Operations for Orders entity
- 
- 
-//Get all Addresses
-export const getExistingOrders = async():Promise<TOrderSelect[] | null> => {
-     return await  db.query.ordersTable.findMany({});
-}
- 
-//Get order by ID
-export const getExistingOrderById = async(existingOrderId: number):Promise<TOrderSelect | undefined>=> {
-      return await db.query.ordersTable.findFirst({
-        where: eq(ordersTable.ordersId,existingOrderId)
-      })
-}
- 
-// Create a New Order
-export const createNewOrder = async(order:TOrderInsert):Promise<string> => {
-       await db.insert(ordersTable).values(order).returning();
-        return "Order Created Successfully 😎"
-}
- 
-// Update an existing Order
-export const updateExistingOrder = async(existingOrderId: number, order:TOrderInsert):Promise<string> => {
-    await db.update(ordersTable).set(order).where(eq(ordersTable.ordersId,existingOrderId));
-    return "Address Details  Updated Succeffully 😎";
-}
+import { db } from "../drizzle/db";
+import {
+  ordersTable,
+  orderMenuItemTable,
+  TOrderInsert,
+  TOrderMenuItemInsert,
+} from "../drizzle/schema";
 
- //delete an existing Order
-export const deleteExistingOrder = async(existingOrderId: number):Promise<string> => {
-   await db.delete(ordersTable).where(eq(ordersTable.ordersId,existingOrderId));
-   return "Selected Order Deleted Sucessfully";
-}
+export const getExistingOrders = async () => {
+  return await db.query.ordersTable.findMany({});
+};
+
+export const getExistingOrderById = async (id: number) => {
+  return await db.query.ordersTable.findFirst({
+    where: eq(ordersTable.ordersId, id),
+  });
+};
+
+export const getOrdersByUserId = async (userId: number) => {
+  return await db.query.ordersTable.findMany({
+    where: eq(ordersTable.userId, userId),
+  });
+};
+
+export const createNewOrder = async (order: TOrderInsert & {
+  items: {
+    menuId: number;
+    quantity: number;
+    itemPrice?: string;
+    price?: string;
+    comment?: string | null;
+  }[];
+}): Promise<any> => {
+  const { items, ...orderData } = order;
+  const estimatedDeliveryTime = new Date(orderData.estimatedDeliveryTime as any);
+  const orderToInsert = {
+    ...orderData,
+    estimatedDeliveryTime,
+  };
+
+  const [insertedOrder] = await db.insert(ordersTable).values(orderToInsert).returning();
+  if (!insertedOrder) throw new Error("Order insertion failed");
+
+  const menuItemData: TOrderMenuItemInsert[] = items.map((item) => ({
+    orderId: insertedOrder.ordersId,
+    menuItemId: item.menuId,
+    menuId: item.menuId, // only if field exists
+    quantity: item.quantity,
+    price: item.price ?? "0.00",
+    itemPrice: item.itemPrice ?? "0.00",
+    comment: item.comment ?? null,
+  }));
+
+  await db.insert(orderMenuItemTable).values(menuItemData);
+  return insertedOrder;
+};
+
+export const updateExistingOrder = async (id: number, order: Partial<TOrderInsert>) => {
+  await db.update(ordersTable).set(order).where(eq(ordersTable.ordersId, id));
+  return "Order updated successfully.";
+};
+
+export const deleteExistingOrder = async (id: number) => {
+  await db.delete(ordersTable).where(eq(ordersTable.ordersId, id));
+  return "Order deleted successfully.";
+};

@@ -1,5 +1,5 @@
 import { eq } from "drizzle-orm";
-import db from "../drizzle/db";
+import { db } from "../drizzle/db";
 import { menuItemTable, TMenuItemInsert, TMenuItemSelect } from "../drizzle/schema";
 
 
@@ -16,7 +16,7 @@ export const getMenuItems = async():Promise<TMenuItemSelect[] | null> =>{
 export const getMenuItemsById = async(menuId:number):Promise<TMenuItemSelect | undefined> => {
     return await db.query.menuItemTable.findFirst(
         {
-            where:eq(menuItemTable.menuId, menuId)
+            where:eq(menuItemTable.menuItemId, menuId)
         }
     )
 }
@@ -29,12 +29,12 @@ export const createNewMenuItem = async(menuItem:TMenuItemInsert):Promise<string>
 
 //update an existing menuItem
 export const updateExistingMenuItem = async(menuId:number, menuItem:Partial<TMenuItemInsert>):Promise<string> => {
-    await db.update(menuItemTable).set(menuItem).where(eq(menuItemTable.menuId, menuId));
+    await db.update(menuItemTable).set(menuItem).where(eq(menuItemTable.menuItemId, menuId));
     return "MenuItem updated Successfully 😎"
 }
 
 //Delete a restaurant
 export const deleteExistingMenuItem = async(menuId:number):Promise<string> => {
-    await db.delete(menuItemTable).where(eq(menuItemTable.menuId, menuId));
+    await db.delete(menuItemTable).where(eq(menuItemTable.menuItemId, menuId));
     return "MenuItem deleted Successfully 🎉"
 }

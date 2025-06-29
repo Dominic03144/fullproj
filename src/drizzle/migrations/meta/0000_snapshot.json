@@ -1,5 +1,5 @@
 {
-  "id": "326b677e-adbc-4a00-b4b0-53ed629f3f43",
+  "id": "870b6eb0-af1a-4ead-9d01-dfc6419d7e66",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -20,66 +20,21 @@
           "primaryKey": false,
           "notNull": true
         },
-        "streetAddress2": {
-          "name": "streetAddress2",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "zipCode": {
-          "name": "zipCode",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "deliveryInstructions": {
-          "name": "deliveryInstructions",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "userId": {
-          "name": "userId",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
         "cityId": {
           "name": "cityId",
           "type": "integer",
           "primaryKey": false,
           "notNull": true
         },
-        "createdAt": {
-          "name": "createdAt",
-          "type": "timestamp",
+        "zipCode": {
+          "name": "zipCode",
+          "type": "text",
           "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        },
-        "updatedAt": {
-          "name": "updatedAt",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
+          "notNull": true
         }
       },
       "indexes": {},
       "foreignKeys": {
-        "addressTable_userId_userTable_userId_fk": {
-          "name": "addressTable_userId_userTable_userId_fk",
-          "tableFrom": "addressTable",
-          "tableTo": "userTable",
-          "columnsFrom": [
-            "userId"
-          ],
-          "columnsTo": [
-            "userId"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        },
         "addressTable_cityId_cityTable_cityId_fk": {
           "name": "addressTable_cityId_cityTable_cityId_fk",
           "tableFrom": "addressTable",
@@ -170,98 +125,6 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.commentTable": {
-      "name": "commentTable",
-      "schema": "",
-      "columns": {
-        "commentId": {
-          "name": "commentId",
-          "type": "serial",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "orderId": {
-          "name": "orderId",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "userId": {
-          "name": "userId",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "commentText": {
-          "name": "commentText",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "isComplaint": {
-          "name": "isComplaint",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": false,
-          "default": false
-        },
-        "isPraise": {
-          "name": "isPraise",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": false,
-          "default": false
-        },
-        "createdAt": {
-          "name": "createdAt",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        },
-        "updatedAt": {
-          "name": "updatedAt",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "commentTable_orderId_ordersTable_ordersId_fk": {
-          "name": "commentTable_orderId_ordersTable_ordersId_fk",
-          "tableFrom": "commentTable",
-          "tableTo": "ordersTable",
-          "columnsFrom": [
-            "orderId"
-          ],
-          "columnsTo": [
-            "ordersId"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        },
-        "commentTable_userId_userTable_userId_fk": {
-          "name": "commentTable_userId_userTable_userId_fk",
-          "tableFrom": "commentTable",
-          "tableTo": "userTable",
-          "columnsFrom": [
-            "userId"
-          ],
-          "columnsTo": [
-            "userId"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
-    },
     "public.driverTable": {
       "name": "driverTable",
       "schema": "",
@@ -270,6 +133,12 @@
           "name": "driverId",
           "type": "serial",
           "primaryKey": true,
+          "notNull": true
+        },
+        "userId": {
+          "name": "userId",
+          "type": "integer",
+          "primaryKey": false,
           "notNull": true
         },
         "carMake": {
@@ -289,26 +158,6 @@
           "type": "integer",
           "primaryKey": false,
           "notNull": true
-        },
-        "userId": {
-          "name": "userId",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "online": {
-          "name": "online",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": false,
-          "default": false
-        },
-        "delivering": {
-          "name": "delivering",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": false,
-          "default": false
         },
         "createdAt": {
           "name": "createdAt",
@@ -351,8 +200,8 @@
       "name": "menuItemTable",
       "schema": "",
       "columns": {
-        "menuId": {
-          "name": "menuId",
+        "menuItemId": {
+          "name": "menuItemId",
           "type": "serial",
           "primaryKey": true,
           "notNull": true
@@ -391,7 +240,7 @@
           "name": "price",
           "type": "numeric(10, 2)",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "active": {
           "name": "active",
@@ -512,87 +361,15 @@
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
-        "orderMenuItemTable_menuItemId_menuItemTable_menuId_fk": {
-          "name": "orderMenuItemTable_menuItemId_menuItemTable_menuId_fk",
+        "orderMenuItemTable_menuItemId_menuItemTable_menuItemId_fk": {
+          "name": "orderMenuItemTable_menuItemId_menuItemTable_menuItemId_fk",
           "tableFrom": "orderMenuItemTable",
           "tableTo": "menuItemTable",
           "columnsFrom": [
             "menuItemId"
           ],
           "columnsTo": [
-            "menuId"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
-    },
-    "public.orderStatusTable": {
-      "name": "orderStatusTable",
-      "schema": "",
-      "columns": {
-        "orderStatusId": {
-          "name": "orderStatusId",
-          "type": "serial",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "orderId": {
-          "name": "orderId",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "statusCatalogId": {
-          "name": "statusCatalogId",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "createdAt": {
-          "name": "createdAt",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        },
-        "updatedAt": {
-          "name": "updatedAt",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "orderStatusTable_orderId_ordersTable_ordersId_fk": {
-          "name": "orderStatusTable_orderId_ordersTable_ordersId_fk",
-          "tableFrom": "orderStatusTable",
-          "tableTo": "ordersTable",
-          "columnsFrom": [
-            "orderId"
-          ],
-          "columnsTo": [
-            "ordersId"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        },
-        "orderStatusTable_statusCatalogId_statusCatalogTable_statusCatalogId_fk": {
-          "name": "orderStatusTable_statusCatalogId_statusCatalogTable_statusCatalogId_fk",
-          "tableFrom": "orderStatusTable",
-          "tableTo": "statusCatalogTable",
-          "columnsFrom": [
-            "statusCatalogId"
-          ],
-          "columnsTo": [
-            "statusCatalogId"
+            "menuItemId"
           ],
           "onDelete": "cascade",
           "onUpdate": "no action"
@@ -654,7 +431,7 @@
           "name": "price",
           "type": "numeric(10, 2)",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "discount": {
           "name": "discount",
@@ -750,64 +527,6 @@
             "driverId"
           ],
           "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
-    },
-    "public.restaurantOwnerTable": {
-      "name": "restaurantOwnerTable",
-      "schema": "",
-      "columns": {
-        "restaurantOwnerId": {
-          "name": "restaurantOwnerId",
-          "type": "serial",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "restaurantId": {
-          "name": "restaurantId",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "ownerId": {
-          "name": "ownerId",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "restaurantOwnerTable_restaurantId_restaurantTable_restaurantId_fk": {
-          "name": "restaurantOwnerTable_restaurantId_restaurantTable_restaurantId_fk",
-          "tableFrom": "restaurantOwnerTable",
-          "tableTo": "restaurantTable",
-          "columnsFrom": [
-            "restaurantId"
-          ],
-          "columnsTo": [
-            "restaurantId"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        },
-        "restaurantOwnerTable_ownerId_userTable_userId_fk": {
-          "name": "restaurantOwnerTable_ownerId_userTable_userId_fk",
-          "tableFrom": "restaurantOwnerTable",
-          "tableTo": "userTable",
-          "columnsFrom": [
-            "ownerId"
-          ],
-          "columnsTo": [
-            "userId"
-          ],
-          "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },
@@ -927,31 +646,6 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.statusCatalogTable": {
-      "name": "statusCatalogTable",
-      "schema": "",
-      "columns": {
-        "statusCatalogId": {
-          "name": "statusCatalogId",
-          "type": "serial",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "statusCatalogName": {
-          "name": "statusCatalogName",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
-    },
     "public.userTable": {
       "name": "userTable",
       "schema": "",
@@ -962,8 +656,8 @@
           "primaryKey": true,
           "notNull": true
         },
-        "name": {
-          "name": "name",
+        "userName": {
+          "name": "userName",
           "type": "text",
           "primaryKey": false,
           "notNull": true
@@ -993,6 +687,14 @@
           "primaryKey": false,
           "notNull": false,
           "default": false
+        },
+        "userType": {
+          "name": "userType",
+          "type": "user_type",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'customer'"
         },
         "confirmationCode": {
           "name": "confirmationCode",
@@ -1054,6 +756,17 @@
         "accepted",
         "rejected",
         "delivered"
+      ]
+    },
+    "public.user_type": {
+      "name": "user_type",
+      "schema": "public",
+      "values": [
+        "customer",
+        "owner",
+        "driver",
+        "admin",
+        "member"
       ]
     }
   },

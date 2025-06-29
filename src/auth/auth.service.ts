@@ -2,15 +2,30 @@ import { eq } from "drizzle-orm";
 import { db } from "../drizzle/db";
 import { TUserInsert, TUserSelect, userTable } from "../drizzle/schema";
 
-// Register a new user
+// Register a new user with error handling
 export const createUserServices = async (
   user: TUserInsert
 ): Promise<TUserSelect> => {
-  const [createdUser] = await db.insert(userTable).values(user).returning();
-  if (!createdUser) {
-    throw new Error("User creation failed");
+  try {
+    const [createdUser] = await db.insert(userTable).values(user).returning();
+
+    if (!createdUser) {
+      throw new Error("User creation failed");
+    }
+
+    return createdUser;
+  } catch (error: any) {
+    // ✅ Handle duplicate key error (PostgreSQL unique constraint violation)
+    if (error.code === "23505") {
+      const fieldMatch = error.detail?.match(/\("(.+?)"\)=/);
+      const fieldName = fieldMatch?.[1] || "Field";
+      throw new Error(`${fieldName} already exists. Please use another.`);
+    }
+
+    // Log and throw generic error
+    console.error("createUserServices error:", error);
+    throw new Error("An error occurred while creating the user.");
   }
-  return createdUser;
 };
 
 // Get user by email
@@ -22,7 +37,7 @@ export const getUserByEmailService = async (
   });
 };
 
-// Update password
+// Update user password
 export const updateUserPasswordService = async (
   email: string,
   newPassword: string

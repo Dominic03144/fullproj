@@ -1,12 +1,25 @@
-import {Router} from "express"
+import { Router } from "express";
+import {
+  getDrivers,
+  getDriverById,
+  createDriver,
+  updateDriver,
+  deleteDriver
+} from "./driver.controller";
 
-import {getDrivers,getDriverById,createDriver,updateDriver,deleteDriver} from "./driver.controller"
+export const driverRouter = Router();
 
-export const driverRouter=Router();
+// List all drivers
+driverRouter.get("/drivers", getDrivers);
 
-driverRouter.get("/driver",getDrivers).post("/driver",createDriver)
+// Create a driver
+driverRouter.post("/drivers", createDriver);
 
-driverRouter.delete("/driver",deleteDriver)
+// Get a driver by ID
+driverRouter.get("/drivers/:id", getDriverById);
 
-driverRouter.get("/driver/:id",getDriverById)
-driverRouter.put("/driver/:id",updateDriver)
+// Update a driver by ID
+driverRouter.put("/drivers/:id", updateDriver);
+
+// Delete a driver by ID
+driverRouter.delete("/drivers/:id", deleteDriver);
